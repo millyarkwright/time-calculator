@@ -1,6 +1,28 @@
 
 def add_time(start, duration, day=''):
 
+  """
+    Required parameters:
+      * a start time in the 12-hour clock format (ending in AM or PM) 
+      * a duration time that indicates the number of hours and minutes
+    Optional parameter:
+      * (optional) a starting day of the week, case insensitive
+    
+    Function will add the duration time to the start time and return the result.
+
+    Examples: 
+      add_time("3:00 PM", "3:10")
+      Returns: 6:10 PM
+
+      add_time("11:30 AM", "2:32", "Monday")
+      Returns: 2:02 PM, Monday
+
+      add_time("6:30 PM", "205:12")
+      Returns: 7:42 AM (9 days later)
+    
+  """
+
+
   days_week = [
     'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday',
     'sunday'
@@ -34,18 +56,17 @@ def add_time(start, duration, day=''):
   # Only increase days_later if period went from PM to AM. AM to PM isn't a new day.
     if start_period == 'PM' and new_period == 'AM':
       days_later += 1
-    # 12 hours is the equivalent to 1 period and as we've changed ("increased") the period, we can "reduce" the hours. This is similar to the above where 60 minutes is the equivalent to an hour so if the minutes are greater than 60, we've increased the hour and reduced the minutes to the remainder.
+    # 12 hours is the equivalent to 1 period and as we've changed ('increased') the period, we can 'reduce' the hours. 
     if hours > 12:
       hours %= 12
 
-  # Find the day of the week n days later. Need to do % len(days_week) otherwise day_index will be greater than the length of the array. 
-  # Example: 8:16pm Tuesday + 466 hours & 2 minutes --> days_week.index(1 + 20) % 7 = 0. Monday is at index 0. If this Tuesday was Tuesday 31st January, the  new date and time would be Monday 20th January 06:18 AM. 
+  # Find the day of the week n days later. Modulus operator to cycle through the days_week array.
   if day:
     day_index = (days_week.index(day.lower()) + days_later) % len(days_week)
     dayofweek = f", {days_week[day_index].title()}"
 
   if days_later == 1: 
-    day_later_string = " (next day)"  
+    day_later_string = ' (next day)'  
   elif days_later > 1:
     day_later_string = f" ({days_later} days later)"
 
